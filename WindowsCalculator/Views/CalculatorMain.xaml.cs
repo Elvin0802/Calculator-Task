@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WindowsCalculator.Views;
 
@@ -22,7 +10,7 @@ public partial class CalculatorMain : Window
 		InitializeComponent();
 	}
 
-	private bool CheckNumbersEnd() 
+	private bool CheckNumbersEnd()
 		=> new List<char> { '1', '2', '3', '4', '5', '6', '7', '8', '9' }.Any(c => c == Numbers.Text.Last());
 	private bool CheckZero()
 		=> Numbers.Text.All(c => c == '0');
@@ -39,16 +27,16 @@ public partial class CalculatorMain : Window
 		if (string.IsNullOrEmpty(Numbers.Text)) return;
 
 		if ((Numbers.Text.Count(c => c == '.') < 1) ||
-			(Numbers.Text.Count (c => c == '.') <= Numbers.Text.Count(c => c=='+' || c=='-'||c=='*' || c=='/')))
-				Numbers.Text += ".";
+			(Numbers.Text.Count(c => c == '.') <= Numbers.Text.Count(c => c=='+' || c=='-'||c=='*' || c=='/')))
+			Numbers.Text += ".";
 	}
 
 	private void DeleteEnd_Click(object sender, RoutedEventArgs e)
 	{
-		if (string.IsNullOrEmpty(Numbers.Text)) return;
-
 		try
 		{
+			if (string.IsNullOrEmpty(Numbers.Text)) return;
+
 			Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length - 1);
 		}
 		catch { return; }
@@ -62,44 +50,65 @@ public partial class CalculatorMain : Window
 		{
 			if (CheckEndOperator())
 				Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
-			
+
 			Numbers.Text+= "+";
 		}
 	}
 	private void MinusButton_Click(object sender, RoutedEventArgs e)
 	{
-		if (string.IsNullOrEmpty(Numbers.Text)) return;
-
-		if (CheckNumbersEnd())
+		try
 		{
-			if (CheckEndOperator())
-				Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
+			if (string.IsNullOrEmpty(Numbers.Text)) return;
 
-			Numbers.Text+= "-";
+			if (CheckNumbersEnd())
+			{
+				if (CheckEndOperator())
+					Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
+
+				Numbers.Text+= "-";
+			}
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show("Error", $"{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 	private void DivideButton_Click(object sender, RoutedEventArgs e)
 	{
-		if (string.IsNullOrEmpty(Numbers.Text)) return;
-
-		if (CheckNumbersEnd())
+		try
 		{
-			if (CheckEndOperator())
-				Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
+			if (string.IsNullOrEmpty(Numbers.Text)) return;
 
-			Numbers.Text+= "/";
+			if (CheckNumbersEnd())
+			{
+				if (CheckEndOperator())
+					Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
+
+				Numbers.Text+= "/";
+			}
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show("Error", $"{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 	private void MultiplyButton_Click(object sender, RoutedEventArgs e)
 	{
-		if (string.IsNullOrEmpty(Numbers.Text)) return;
-
-		if (CheckNumbersEnd())
+		try
 		{
-			if (CheckEndOperator())
-				Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
+			if (string.IsNullOrEmpty(Numbers.Text)) return;
 
-			Numbers.Text+= "*";
+			if (CheckNumbersEnd())
+			{
+				if (CheckEndOperator())
+					Numbers.Text = Numbers.Text.Remove(Numbers.Text.Length-1);
+
+				Numbers.Text+= "*";
+			}
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show("Error", $"{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 
@@ -109,31 +118,45 @@ public partial class CalculatorMain : Window
 	}
 	private void CEButton_Click(object sender, RoutedEventArgs e)
 	{
-		if (string.IsNullOrEmpty(Numbers.Text)) return;
-
-		for (int c = Numbers.Text.Length-1; c >= 0; c--)
+		try
 		{
-			if (Numbers.Text[c] == '+' || Numbers.Text[c] == '-' ||
-					Numbers.Text[c] == '*' || Numbers.Text[c] == '/')
-				break;
+			if (string.IsNullOrEmpty(Numbers.Text)) return;
 
-			Numbers.Text = Numbers.Text.Remove(c);
+			for (int c = Numbers.Text.Length-1; c >= 0; c--)
+			{
+				if (Numbers.Text[c] == '+' || Numbers.Text[c] == '-' ||
+						Numbers.Text[c] == '*' || Numbers.Text[c] == '/')
+					break;
+
+				Numbers.Text = Numbers.Text.Remove(c);
+			}
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show("Error", $"{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 
 	private void ChangeMinusPlusButton_Click(object sender, RoutedEventArgs e)
 	{
-		if (string.IsNullOrEmpty(Numbers.Text)) return;
-
-		if (Numbers.Text.First() == '-')
+		try
 		{
-			Numbers.Text = Numbers.Text.Remove(0, 1);
-			return;
-		}
+			if (string.IsNullOrEmpty(Numbers.Text)) return;
 
-		string result = "-";
-		result += Numbers.Text;
-		Numbers.Text =  result;
+			if (Numbers.Text.First() == '-')
+			{
+				Numbers.Text = Numbers.Text.Remove(0, 1);
+				return;
+			}
+
+			string result = "-";
+			result += Numbers.Text;
+			Numbers.Text =  result;
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show("Error", $"{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Error);
+		}
 	}
 
 	private void Num1_Click(object sender, RoutedEventArgs e)
@@ -156,7 +179,7 @@ public partial class CalculatorMain : Window
 			Numbers.Text="";
 
 		Numbers.Text+= "3";
-	}	
+	}
 	private void Num4_Click(object sender, RoutedEventArgs e)
 	{
 		if (CheckZero())
@@ -236,7 +259,7 @@ public partial class CalculatorMain : Window
 			if (!CheckNumbersEnd())
 				return;
 
-			Numbers.Text = 
+			Numbers.Text =
 				Math.Sqrt(Convert.ToDouble(new DataTable().Compute(Numbers.Text, null))).ToString();
 		}
 		catch (Exception ex)
@@ -255,7 +278,7 @@ public partial class CalculatorMain : Window
 
 			Numbers.Text = Math.Pow
 			(Convert.ToDouble(new DataTable().Compute(Numbers.Text, null)), 2.0).ToString();
-        }
+		}
 		catch (Exception ex)
 		{
 			MessageBox.Show("Error", $"{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Error);
